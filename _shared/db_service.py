@@ -17,7 +17,7 @@ CONNECTION_PARAMS = {
     'port': Constants.DB_PORT,
 }
 
-if not Constants.IS_DEV:
+if not Constants.IS_DEV and Constants.SOCKET_PATH:
     CONNECTION_PARAMS['unix_socket'] = Constants.SOCKET_PATH
 
 
