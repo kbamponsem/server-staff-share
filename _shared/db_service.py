@@ -1,28 +1,33 @@
-from typing import Union, List, Tuple
-from MySQLdb.cursors import Cursor, DictCursor
-from MySQLdb import Connection, escape_string  # pylint: disable=no-name-in-module
 from functools import wraps
 from typing import Callable
-import _shared.constants as Constants
+from typing import Union, List
+
 import MySQLdb
-from _shared.utilities import compose
-from flask.logging import logging as logger
+from MySQLdb import Connection, escape_string  # pylint: disable=no-name-in-module
+from MySQLdb.cursors import Cursor, DictCursor
 from flask import g
+from flask.logging import logging as logger
+
+import _shared.constants as CONSTANTS
 
 CONNECTION_PARAMS = {
-    'host': Constants.DB_HOST,
-    'user': Constants.DB_USER,
-    'passwd': Constants.DB_PASS,
-    'db': Constants.DB_NAME,
-    'port': Constants.DB_PORT,
+    'host': CONSTANTS.DB_HOST,
+    'user': CONSTANTS.DB_USER,
+    'passwd': CONSTANTS.DB_PASS,
+    'db': CONSTANTS.DB_NAME,
+    'port': CONSTANTS.DB_PORT,
 }
 
-if not Constants.IS_DEV and Constants.SOCKET_PATH:
-    CONNECTION_PARAMS['unix_socket'] = Constants.SOCKET_PATH
+if not CONSTANTS.IS_DEV and CONSTANTS.SOCKET_PATH:
+    CONNECTION_PARAMS['unix_socket'] = CONSTANTS.SOCKET_PATH
 
 
-def getDbConnection() -> Connection:
-    '''get a connection from the pool'''
+def get_db_connection() -> Connection:
+    """get a connection from the pool
+
+    Returns:
+        Connection -- database connection
+    """
     conn = None
     try:
         conn = getattr(g, 'db_connection')
@@ -33,8 +38,9 @@ def getDbConnection() -> Connection:
     return conn
 
 
-def endDbConnection(_=None):
-    '''end mysql database connection'''
+def end_db_connection(_=None):
+    """end mysql database connection
+    """
     try:
 
         conn: Connection = getattr(g, 'db_connection')
@@ -44,12 +50,12 @@ def endDbConnection(_=None):
         logger.debug('Database connection does not exist')
 
 
-def withEscape(func):
-    '''
+def with_escape(func):
+    """
     In order to avoid SQL Injection attacks,
     you should always escape any user provided data
     before using it inside a SQL query.
-    '''
+    """
 
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -61,30 +67,45 @@ def withEscape(func):
     return wrapper
 
 
-def inQuery(query_func):
+def in_query(query_func):
+    """wrap function to a database connection
 
+    Arguments:
+        query_func {Callable} -- function returning query string
+
+    Returns:
+        Callable -- wrapped function
+    """
     @wraps(query_func)
-    @withEscape
+    @with_escape
     def wrapper(*args, **kwargs):
-        conn = getDbConnection()
-        cur = getCursor(conn)
-        return runPreparedQuery(cur, query_func(*args, **kwargs))
+        conn = get_db_connection()
+        cur = get_cursor(conn)
+        return run_prepared_query(cur, query_func(*args, **kwargs))
 
     return wrapper
 
 
-def runInTransaction(func: Callable):
-    '''
-    higher order function
+def run_in_transaction(func: Callable):
+    """higher order function
     takes in a function and
     returns a function that executes the passed in function within a transaction
     should probably be called wrapped in a try catch as it does not handle
     any errors, other than rolling back the transaction
-    '''
+
+    Arguments:
+        func {Callable} -- wrapped function
+
+    Raises:
+        e: Mysql error
+
+    Returns:
+        Callable -- Wrapped function
+    """
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        conn = getDbConnection()
+        conn = get_db_connection()
         conn.begin()  # start transaction
         logger.debug('[SQL] BEGIN')
         try:
@@ -101,15 +122,20 @@ def runInTransaction(func: Callable):
 
 
 def rollback(conn: Connection = None):
-    conn = conn or getDbConnection()
+    """rollback database transaction
+
+    Keyword Arguments:
+        conn {Connection} -- database connection (default: {None})
+    """
+    conn = conn or get_db_connection()
     if conn:
         conn.rollback()
         logger.debug('ROLLBACK')
 
 
-@runInTransaction
-def runPreparedQuery(cur: Cursor, preparedQuery: str, params: List[Tuple] = [], dim: Union['single', 'multi'] = 'single'):
-    '''
+@run_in_transaction
+def run_prepared_query(cur: Cursor, prepared_query: str, params=None, dim: Union['single', 'multi'] = 'single'):
+    """
     Executes a database query and returns a PROMISE that resolves with the data
     USE ONLY FOR, CREATE, UPDATE, DELETE,
 
@@ -118,27 +144,61 @@ def runPreparedQuery(cur: Cursor, preparedQuery: str, params: List[Tuple] = [], 
     'INSERT INTO movies (title, rating) VALUES (?, ?)'
     Array should look like this:
     [['Taxi Driver', 100], ['Taxi Driver', 100]]
-    '''
 
-    logger.debug(f'[SQL] {preparedQuery}')
+    Arguments:
+        cur {Cursor} -- MySQLdb cursor object
+        prepared_query {str} -- query string
+
+    Keyword Arguments:
+        params {Union[List, None]} -- query parameters (default: {None})
+        dim {Union[single, multi]} -- returns single row or multiple rows (default: {'single'})
+
+    Returns:
+        List -- database results
+    """
+
+    if params is None:
+        params = []
+    logger.debug(f'[SQL] {prepared_query}')
     if dim == 'multi':
-        cur.executemany(preparedQuery, params)
+        cur.executemany(prepared_query, params)
     else:
-        cur.execute(preparedQuery, params)
+        cur.execute(prepared_query, params)
 
     return cur.fetchall()
 
 
-def getCursor(conn: Connection) -> Cursor:
-    ''' get database cursor '''
+def get_cursor(conn: Connection) -> Cursor:
+    """get database cursor
+
+    Arguments:
+        conn {Connection} -- database connection
+
+    Returns:
+        Cursor -- database cursor
+    """
     return conn.cursor(DictCursor)
 
 
-def getLastId(cur: Cursor) -> int:
-    ''' get last inserted id '''
+def get_last_id(cur: Cursor) -> int:
+    """get last inserted id
+
+    Arguments:
+        cur {Cursor} -- database cursor object
+
+    Returns:
+        int -- last id from insert
+    """
     return cur.lastrowid
 
 
-def getLastIds(cur: Cursor) -> List[int]:
-    ''' get last inserted ids '''
-    return [getLastId(cur) + row for row in range(cur.rowcount)]
+def get_last_ids(cur: Cursor) -> List[int]:
+    """get last inserted ids
+
+    Arguments:
+        cur {Cursor} -- database cursor object
+
+    Returns:
+        List[int] -- last ids from insert
+    """
+    return [get_last_id(cur) + row for row in range(cur.rowcount)]

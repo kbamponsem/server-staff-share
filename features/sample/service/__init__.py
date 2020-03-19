@@ -1,10 +1,10 @@
-from .queries import testQuery, testInsert
-from _shared import withKey
+from _shared import with_key
+from .queries import test_query, test_insert
 
 
-def test_query():
-    return withKey(results=testQuery(value=1)[0])
+def test_select_query():
+    return with_key(results=test_query(value=1)[0])
 
 
 def test_insert_query():
-    return withKey(results=testInsert(data='Hello world from python'))
+    return with_key(results=test_insert(data='Hello world from python'))

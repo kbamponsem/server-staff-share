@@ -1,11 +1,12 @@
 from flask import Flask
-from .utilities import withKey
+
 import _shared.constants as Constants
+from .utilities import with_key
 
 
 def configure_app(app: Flask):
-    ''' configure flask app '''
-    app.config.update(**withKey(
+    """ configure flask app """
+    app.config.update(**with_key(
         SECRET_KEY=Constants.SECRET_KEY,
         ENV=Constants.MODE,
         MAX_CONTENT_LENGTH=Constants.MAX_CONTENT_LENGTH,

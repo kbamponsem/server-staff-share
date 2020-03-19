@@ -1,7 +1,12 @@
 from flask import Flask
-from _shared.db_service import endDbConnection, getDbConnection
-import logging as logger
+
+from _shared.db_service import end_db_connection
 
 
-def addMiddlewares(app: Flask):
-    app.teardown_appcontext(endDbConnection)
+def add_middlewares(app: Flask):
+    """handler to register application middlewares
+
+    Arguments:
+            app {Flask} -- Flask App
+    """
+    app.teardown_appcontext(end_db_connection)

@@ -1,4 +1,3 @@
-
 NUMBER_TYPE = {'type': 'number'}
 STRING_TYPE = {'type': 'string'}
 INTEGER_TYPE = {'type': 'integer'}

@@ -1,8 +1,9 @@
 from flask import Flask
-from _shared import inScope
+
+from _shared import in_scope
 from features import sample
 
 
-def registerUrls(app: Flask):
-    ### REGISTER ROUTES ###
-    inScope(app, '/sample', sample.expose)
+def register_urls(app: Flask):
+    # --- REGISTER ROUTES ---
+    in_scope(app, '/sample', sample.expose)

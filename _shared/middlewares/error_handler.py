@@ -1,32 +1,49 @@
-from flask import jsonify
-from _shared.error_service import BaseError, format_error, HTTP_404_ERROR, HTTP_503_ERROR, HTTP_500_ERROR, HTTP_405_ERROR
-from typing import Union, Callable, List, Union, Tuple
-from functools import partial
-from flask import Flask
-from _shared.db_service import rollback
 import traceback
+
+from flask import Flask
+from flask import jsonify
 from flask.logging import logging as logger
 
+from _shared.error_service import BaseError, HTTP_404_ERROR, HTTP_503_ERROR, HTTP_500_ERROR, \
+    HTTP_405_ERROR
 
-def withError(err_type: BaseError, static=True):
-    ''' api error handler wrapper '''
-    def errorResponse(error):
+
+def with_error(err_type: BaseError, static=True):
+    """api error handler wrapper
+
+    Arguments:
+            err_type {BaseError} -- error exception class
+
+    Keyword Arguments:
+            static {bool} -- defines if error is already initialized or thrown during (default: {True})
+
+    Returns:
+            Callable -- wrapper function to handle the error
+    """
+
+    def error_response(error):
         error = error if not static else err_type
         response = jsonify(error.to_dict())
         response.status_code = error.status_code
         logger.error(traceback.format_exc())
         return response
-    return errorResponse
+
+    return error_response
 
 
-handleError = withError(BaseError, False)
-handle404Error = withError(HTTP_404_ERROR)
-handle503Error = withError(HTTP_503_ERROR)
-handle500Error = withError(HTTP_500_ERROR)
-handle405Error = withError(HTTP_405_ERROR)
+handleError = with_error(BaseError, False)
+handle404Error = with_error(HTTP_404_ERROR)
+handle503Error = with_error(HTTP_503_ERROR)
+handle500Error = with_error(HTTP_500_ERROR)
+handle405Error = with_error(HTTP_405_ERROR)
 
 
-def registerErrorHandlers(app: Flask):
+def register_error_handlers(app: Flask):
+    """register error handlers for the application
+
+    Arguments:
+            app {Flask} -- Flask App
+    """
     handlers = [
         (handleError, BaseError),
         (handle404Error, 404),
@@ -35,4 +52,6 @@ def registerErrorHandlers(app: Flask):
         (handle503Error, 503),
         (handle405Error, 405)
     ]
-    return [app.errorhandler(arg)(func) for func, arg in handlers]
+
+    for func, arg in handlers:
+        app.errorhandler(arg)(func)

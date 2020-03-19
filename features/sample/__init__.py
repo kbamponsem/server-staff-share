@@ -1,3 +1,3 @@
-from .routes import addSample, getSample, deleteSample, updateSample, broken
+from .routes import add_sample, get_sample, delete_sample, update_sample, broken
 
-expose = [addSample, getSample, updateSample, deleteSample, broken]
+expose = [add_sample, get_sample, update_sample, delete_sample, broken]

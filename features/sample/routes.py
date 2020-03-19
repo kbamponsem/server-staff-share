@@ -1,32 +1,30 @@
-from _shared import usePost, useGet, usePut, useDelete, BaseError
-from flask import jsonify, make_response
+from _shared import use_post, use_get, use_put, use_delete, BaseError
 from .schema import ADD_SAMPLE_SCHEMA
-from .service import test_query, test_insert_query
-import logging as logger
+from .service import test_select_query, test_insert_query
 
 
-@usePost(path='/addSample', schema=ADD_SAMPLE_SCHEMA)
-def addSample():
+@use_post(path='/addSample', schema=ADD_SAMPLE_SCHEMA)
+def add_sample():
     test_insert_query()
     return {'message': 'success'}
 
 
-@useGet(path='/getSample')
-def getSample():
-    res = test_query()
+@use_get(path='/getSample')
+def get_sample():
+    res = test_select_query()
     return res
 
 
-@usePut(path='/updateSample', schema={})
-def updateSample():
+@use_put(path='/updateSample', schema={})
+def update_sample():
     return {'message': 'updateSample'}
 
 
-@useDelete(path='/deleteSample', schema={})
-def deleteSample():
+@use_delete(path='/deleteSample', schema={})
+def delete_sample():
     return {'message': 'deleteSample'}
 
 
-@useGet(path='/broken')
+@use_get(path='/broken')
 def broken():
     raise BaseError(message='Broken')

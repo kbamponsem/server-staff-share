@@ -1,11 +1,11 @@
-from _shared import inQuery
+from _shared import in_query
 
 
-@inQuery
-def testQuery(**kwargs):
+@in_query
+def test_query(**kwargs):
     return f'''SELECT {kwargs.get('value', 1)}'''
 
 
-@inQuery
-def testInsert(**kwargs):
+@in_query
+def test_insert(**kwargs):
     return f'''INSERT INTO test (data) VALUES ("{kwargs.get('data')}") '''

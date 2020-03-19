@@ -1,5 +1,5 @@
-from typing import Union, Any
 from enum import Enum
+from typing import Union, Any
 
 try:
     # Python < 3.8
@@ -12,7 +12,7 @@ except ImportError:
 
 class IError(TypedDict):
     message: str
-    data:  Union[dict, None]
+    data: Union[dict, None]
     status: Union[int, None]
     errors: Union[list, None]
     response: Union[Any, None]

@@ -1,22 +1,24 @@
+# noinspection PyPackageRequirements
 from dotenv import load_dotenv
-from .utilities import getEnv
+
+from .utilities import get_env
 
 load_dotenv()
 
-MODE = getEnv('ENV', 'development')
-IS_DEV = getEnv('ENV') != 'production'
-MAX_CONTENT_LENGTH = getEnv('MAX_CONTENT_LENGTH')
-SECRET_KEY = getEnv('SECRET_KEY')
-PORT = getEnv('PORT')
+MODE = get_env('ENV', 'development')
+IS_DEV = get_env('ENV') != 'production'
+MAX_CONTENT_LENGTH = get_env('MAX_CONTENT_LENGTH')
+SECRET_KEY = get_env('SECRET_KEY')
+PORT = get_env('PORT')
 
 # Exceptions are re-raised rather than being handled
 # by the app’s error handlers. If not set,
 # this is implicitly true if TESTING or DEBUG is enabled.
-PROPAGATE_EXCEPTIONS = getEnv('PROPAGATE_EXCEPTIONS', True)
+PROPAGATE_EXCEPTIONS = get_env('PROPAGATE_EXCEPTIONS', True)
 
-DB_HOST = getEnv('DB_HOST')
-DB_USER = getEnv('DB_USER')
-DB_PASS = getEnv('DB_PASS')
-DB_NAME = getEnv('DB_NAME')
-DB_PORT = getEnv('DB_PORT', 3306)
-SOCKET_PATH = getEnv('SOCKET_PATH')
+DB_HOST = get_env('DB_HOST')
+DB_USER = get_env('DB_USER')
+DB_PASS = get_env('DB_PASS')
+DB_NAME = get_env('DB_NAME')
+DB_PORT = get_env('DB_PORT', 3306)
+SOCKET_PATH = get_env('SOCKET_PATH')

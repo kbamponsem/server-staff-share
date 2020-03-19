@@ -1,11 +1,15 @@
-from .utilities import withKey
-from typing import Any
+from .utilities import with_key
 
 
 class BaseError(Exception):
-    '''
-    Base exception for all the custom API errors
-    '''
+    """Base exception for all the custom API errors
+
+    Arguments:
+        Exception {Exception} -- exception
+
+    Returns:
+        Dict -- jsonified error format
+    """
 
     def __init__(self, message=None, status_code=400, payload=None):
         super(BaseError, self).__init__(message)
@@ -14,14 +18,26 @@ class BaseError(Exception):
         self.message = message
 
     def to_dict(self):
-        '''
+        """
         Get a dictionary representation of this error instance
-        '''
+        """
         return format_error(self.message, self.status_code, self.payload)
 
 
 def format_error(message: str, status_code: int, data=None):
-    return {'error': {**withKey(message=message, data=data)}, **withKey(statusCode=status_code)}
+    """format error
+
+    Arguments:
+        message {str} -- error message
+        status_code {int} -- status code
+
+    Keyword Arguments:
+        data {Union[Dict, None]} -- extra error guide (default: {None})
+
+    Returns:
+        Dict -- jsonified error
+    """
+    return {'error': {**with_key(message=message, data=data)}, **with_key(statusCode=status_code)}
 
 
 HTTP_404_ERROR = BaseError('Requested url not found', 404)
@@ -34,5 +50,5 @@ AUTHENICATION_ERROR = BaseError('Authentication Failed', 401)
 PERMISSION_DENIED = BaseError('Permission Denied', 401)
 
 
-def JSON_VALIDATION_ERROR(data): return BaseError(
-    'Invalid json data', 442, data)
+def JSON_VALIDATION_ERROR(data):
+    return BaseError('Invalid json data', 442, data)
