@@ -5,7 +5,7 @@ import MySQLdb
 from flask import g
 from flask.logging import logging as logger
 from MySQLdb import Connection  # pylint: disable=no-name-in-module
-from MySQLdb import escape_string
+from MySQLdb._mysql import escape_string
 from MySQLdb.cursors import Cursor, DictCursor
 
 import _shared.constants as CONSTANTS

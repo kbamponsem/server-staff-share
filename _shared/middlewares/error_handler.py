@@ -52,4 +52,5 @@ def register_error_handlers(app: Flask):
         (handle405Error, 405)
     )
 
-    (app.errorhandler(arg)(func) for func, arg in handlers)
+    for func, arg in handlers:
+        app.errorhandler(arg)(func)
