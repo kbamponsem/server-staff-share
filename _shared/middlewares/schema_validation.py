@@ -39,7 +39,9 @@ def use_schema(schema: Union[Dict, List], func: Callable):
             except ValidationError as error:
                 try:
                     error_details = {
-                        'path': '/'.join([str(p) for p in list(error.absolute_path)[1::2]]),
+                        'path': '/'.join([
+                                str(p) for p in list(error.absolute_path)[1::2]
+                        ]),
                         'reason': error.message
                     }
                 except IndexError:
@@ -57,7 +59,7 @@ def with_schema(schema: Union[Dict, List], inData=True):
             schema {Union[Dict, List]} -- json schema definition
 
     Keyword Arguments:
-            inData {bool} -- defines if schema must be nested in key `data` (default: {True})
+            inData {bool} -- is schema nested in data (default: {True})
 
     Returns:
             Dict -- wrapped schema
@@ -66,7 +68,11 @@ def with_schema(schema: Union[Dict, List], inData=True):
     if not inData:
         return {**schema, 'additionalProperties': False}
 
-    return {'type': 'object', 'properties': {'data': schema}, 'required': ['data']}
+    return {
+        'type': 'object',
+        'properties': {'data': schema},
+        'required': ['data']
+    }
 
 
 def with_object(**kwargs):
@@ -89,7 +95,7 @@ def with_array(items, inData=False):
             items {List} -- schema definition
 
     Keyword Arguments:
-            inData {bool} -- defines if schema must be nested in key `data (default: {False})
+            inData {bool} -- is schema nested in data (default: {False})
 
     Returns:
             Dict -- wrapped schema

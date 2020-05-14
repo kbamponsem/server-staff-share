@@ -89,8 +89,9 @@ def in_query(query_func):
 def run_in_transaction(func: Callable):
     """higher order function
     takes in a function and
-    returns a function that executes the passed in function within a transaction
-    should probably be called wrapped in a try catch as it does not handle
+    returns a function that executes the passed in function
+    within a transaction should probably be called wrapped
+    in a try catch as it does not handle
     any errors, other than rolling back the transaction
 
     Arguments:
@@ -136,7 +137,7 @@ def rollback(conn: Connection = None):
 @run_in_transaction
 def run_prepared_query(cur: Cursor, prepared_query: str, params=None, dim: Union['single', 'multi'] = 'single'):
     """
-    Executes a database query and returns a PROMISE that resolves with the data
+    Executes a database query and returns results of the data
     USE ONLY FOR, CREATE, UPDATE, DELETE,
 
     !!!!!  DO NOT USE FOR READ !!!!!!
@@ -151,7 +152,7 @@ def run_prepared_query(cur: Cursor, prepared_query: str, params=None, dim: Union
 
     Keyword Arguments:
         params {Union[List, None]} -- query parameters (default: {None})
-        dim {Union[single, multi]} -- returns single row or multiple rows (default: {'single'})
+        dim {Union[single, multi]} -- single row or multiple rows (default: {'single'})
 
     Returns:
         List -- database results

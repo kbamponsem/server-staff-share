@@ -33,15 +33,17 @@ def set_current_user(user_id, privileges=None, **kwargs):
 def get_current_user():
     """
     Get the currently logged in user.
-    This AuthUser object would have been stored in the global g object of flask
+    This AuthUser object would have been stored
+    in the global g object of flask
 
-    :returns (AuthUser): An instance of AuthUser that represents the currently logged in user
+    :returns (AuthUser): Represents the currently logged in user
 
-    :raises: :AuthenticationFailedError:, if no user data has been attached to the global g object
+    :raises: :AuthenticationFailedError: no session user data
     """
     try:
         user_data = getattr(g, 'current_user')
     except Exception:
-        # no user data has been attached to g yet. This means no user has been authenticated for this session
+        # no user data has been attached to g yet.
+        # This means no user has been authenticated for this session
         raise AUTHENICATION_ERROR
     return user_data

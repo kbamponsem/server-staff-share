@@ -73,4 +73,6 @@ def add_route(app: Flask, basePath: str, path: str, handler: Callable, method: H
 def in_scope(app: Flask, basePath: str, handlers: List[Any]):
     """ group route in api scope """
 
-    return [add_route(app=app, basePath=basePath, **child()) for child in handlers]
+    return (
+        add_route(app=app, basePath=basePath, **child()) for child in handlers
+    )

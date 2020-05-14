@@ -14,7 +14,7 @@ def with_error(err_type: BaseError, static=True):
             err_type {BaseError} -- error exception class
 
     Keyword Arguments:
-            static {bool} -- defines if error is already initialized or thrown during (default: {True})
+            static {bool} -- is already initialized or thrown during (default: {True})
 
     Returns:
             Callable -- wrapper function to handle the error
@@ -43,14 +43,13 @@ def register_error_handlers(app: Flask):
     Arguments:
             app {Flask} -- Flask App
     """
-    handlers = [
+    handlers = (
         (handleError, BaseError),
         (handle404Error, 404),
         (handle500Error, 500),
         (handle500Error, Exception),
         (handle503Error, 503),
         (handle405Error, 405)
-    ]
+    )
 
-    for func, arg in handlers:
-        app.errorhandler(arg)(func)
+    (app.errorhandler(arg)(func) for func, arg in handlers)
