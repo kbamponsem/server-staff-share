@@ -1,10 +1,7 @@
 from flask import Flask
 
-from _shared import (
-    Constants, configure_app,
-    register_error_handlers,
-    add_middlewares
-)
+from _shared import (Constants, add_middlewares, configure_app,
+                     register_error_handlers)
 from urls import register_urls
 
 app = Flask(__name__)

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Union, Any
+from typing import Any, Union
 
 try:
     # Python < 3.8

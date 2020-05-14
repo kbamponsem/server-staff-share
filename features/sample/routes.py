@@ -1,6 +1,7 @@
-from _shared import use_post, use_get, use_put, use_delete, BaseError
+from _shared import BaseError, use_delete, use_get, use_post, use_put
+
 from .schema import ADD_SAMPLE_SCHEMA
-from .service import test_select_query, test_insert_query
+from .service import test_insert_query, test_select_query
 
 
 @use_post(path='/addSample', schema=ADD_SAMPLE_SCHEMA)

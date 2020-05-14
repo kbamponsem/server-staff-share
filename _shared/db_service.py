@@ -1,12 +1,12 @@
 from functools import wraps
-from typing import Callable
-from typing import Union, List
+from typing import Callable, List, Union
 
 import MySQLdb
-from MySQLdb import Connection, escape_string  # pylint: disable=no-name-in-module
-from MySQLdb.cursors import Cursor, DictCursor
 from flask import g
 from flask.logging import logging as logger
+from MySQLdb import Connection  # pylint: disable=no-name-in-module
+from MySQLdb import escape_string
+from MySQLdb.cursors import Cursor, DictCursor
 
 import _shared.constants as CONSTANTS
 

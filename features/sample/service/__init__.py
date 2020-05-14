@@ -1,5 +1,6 @@
 from _shared import with_key
-from .queries import test_query, test_insert
+
+from .queries import test_insert, test_query
 
 
 def test_select_query():

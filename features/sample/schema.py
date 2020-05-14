@@ -1,4 +1,4 @@
-from _shared import asRootDict, with_key, INTEGER_TYPE, STRING_TYPE
+from _shared import INTEGER_TYPE, STRING_TYPE, asRootDict, with_key
 
 ADD_SAMPLE_SCHEMA = asRootDict(
     properties=with_key(

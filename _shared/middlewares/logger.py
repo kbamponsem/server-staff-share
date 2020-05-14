@@ -6,7 +6,6 @@ import time
 
 from gunicorn import glogging
 
-
 # now we patch Python code to add color support to logging.StreamHandler
 
 

@@ -1,11 +1,11 @@
 import logging as logger
-from functools import wraps, partial
+from functools import partial, wraps
 from typing import Any, Callable, List
 
-from flask import Flask, make_response, jsonify
+from flask import Flask, jsonify, make_response
 
 from . import use_schema
-from .typings import RouterParams, HTTP_METHODS
+from .typings import HTTP_METHODS, RouterParams
 from .utilities import with_key
 
 

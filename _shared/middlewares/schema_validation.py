@@ -1,11 +1,11 @@
 import logging as logger
 from functools import partial, wraps
-from typing import Callable, Union, Dict, List
+from typing import Callable, Dict, List, Union
 
 from flask import request
-from jsonschema import validate, ValidationError
 
 from _shared.error_service import JSON_VALIDATION_ERROR
+from jsonschema import ValidationError, validate
 
 
 def use_schema(schema: Union[Dict, List], func: Callable):

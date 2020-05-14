@@ -1,6 +1,7 @@
 from flask import Flask
 
 import _shared.constants as Constants
+
 from .utilities import with_key
 
 

@@ -1,8 +1,14 @@
+HOST=127.0.0.1
+PORT=3000
+
 init:
 	pip install -r requirements.txt
 
-format:
+isort:
+	sh -c "isort --skip-glob=.tox --recursive . "
+
+format: isort
 	autopep8 --in-place --recursive .
 
 run: 
-	gunicorn --bind 0.0.0.0:3000 -w 4  main:app --reload --logger-class _shared.AppLogger
+	gunicorn --bind $(HOST):$(PORT) -w 4  main:app --reload --logger-class _shared.AppLogger
