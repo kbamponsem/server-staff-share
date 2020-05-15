@@ -30,3 +30,9 @@ class RouterParams(TypedDict):
     path: str
     schema: Union[Any, None]
     code: Union[int, None]
+
+class AuthProvider(Enum):
+    LOCAL = 'LOCAL'
+    GOOGLE = 'GOOGLE'
+    APPLE = 'APPLE'
+    FACEBOOK = 'FACEBOOK'

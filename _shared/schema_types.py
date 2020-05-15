@@ -3,6 +3,8 @@ STRING_TYPE = {'type': 'string'}
 INTEGER_TYPE = {'type': 'integer'}
 BOOLEAN_TYPE = {'type': 'boolean'}
 NULL_TYPE = {'type': 'null'}
+EMAIL_TYPE = {'type': 'string'}
+DATE_TYPE = STRING_TYPE
 FLOAT_TYPE = NUMBER_TYPE
 
 # Nullable schema ###

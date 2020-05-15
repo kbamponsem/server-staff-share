@@ -58,11 +58,11 @@ def with_escape(func):
     """
 
     @wraps(func)
-    def wrapper(*args, **kwargs):
-        args = [escape_string(arg) for arg in args]
-        kwargs = {k: escape_string(v) if isinstance(
-            v, str) else v for k, v in kwargs.items()}
-        return func(*args, **kwargs)
+    def wrapper(**kwargs):
+        if 'params' in kwargs:
+            kwargs['params'] = {k: escape_string(v) if isinstance(
+                v, str) else v for k, v in kwargs['params'].items()}
+        return func(**kwargs)
 
     return wrapper
 
@@ -81,7 +81,8 @@ def in_query(query_func):
     def wrapper(*args, **kwargs):
         conn = get_db_connection()
         cur = get_cursor(conn)
-        return run_prepared_query(cur, query_func(*args, **kwargs))
+        # prepared_query = query_func(*args, **kwargs) % kwargs.get('params')
+        return run_prepared_query(cur,  prepared_query=query_func(*args, **kwargs), params=kwargs.get('params'))
 
     return wrapper
 
@@ -160,11 +161,13 @@ def run_prepared_query(cur: Cursor, prepared_query: str, params=None, dim: Union
 
     if params is None:
         params = []
-    logger.debug(f'[SQL] {prepared_query}')
+
     if dim == 'multi':
         cur.executemany(prepared_query, params)
     else:
         cur.execute(prepared_query, params)
+
+    logger.debug(f'[SQL] {cur._last_executed.decode("utf-8")}')
 
     return cur.fetchall()
 

@@ -37,7 +37,7 @@ def format_error(message: str, status_code: int, data=None):
     Returns:
         Dict -- jsonified error
     """
-    return {'error': {**with_key(message=message, data=data)}, **with_key(statusCode=status_code)}
+    return {'error': {**with_key(data=data, message=message)}, **with_key(statusCode=status_code)}
 
 
 HTTP_404_ERROR = BaseError('Requested url not found', 404)
@@ -52,3 +52,7 @@ PERMISSION_DENIED = BaseError('Permission Denied', 401)
 
 def JSON_VALIDATION_ERROR(data):
     return BaseError('Invalid json data', 442, data)
+
+
+def QUERY_NOT_FOUND(query_type):
+    return RuntimeError(f'Unknown query; {query_type}')

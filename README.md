@@ -1,6 +1,6 @@
 # Documentation
 
-This is the documentation for {{Project}}, a {{description}}.
+This is the documentation for {{Project}}, a {{description}}. This project requires python >= 3.8 
 
 ## Project Structure
 
