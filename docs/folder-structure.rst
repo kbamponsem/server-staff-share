@@ -38,10 +38,6 @@ in your routes.
    Note: The ``main.py`` is the application entry point.
 
 
-.. raw:: latex
-
-   \include
-
 .. include:: ./models.rst
 .. include:: ./routes.rst
 .. include:: ./schema.rst
