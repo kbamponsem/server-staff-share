@@ -22,3 +22,6 @@ DB_PASS = get_env('DB_PASS')
 DB_NAME = get_env('DB_NAME')
 DB_PORT = get_env('DB_PORT', 3306)
 SOCKET_PATH = get_env('SOCKET_PATH')
+
+
+GOOGLE_CLIENT_ID = get_env('GOOGLE_CLIENT_ID')
