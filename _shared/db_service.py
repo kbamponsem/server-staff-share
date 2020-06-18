@@ -206,3 +206,20 @@ def get_last_ids(cur: Cursor) -> List[int]:
         List[int] -- last ids from insert
     """
     return [get_last_id(cur) + row for row in range(cur.rowcount)]
+
+
+def filter_query(params: dict, filters: List[str], operator='AND', where=True):
+    filters = list(filter(lambda x: params.get(x) is not None, filters))
+
+    if not len(filters):
+        return ''
+
+    first_key = filters.pop(0)
+    where_clause = 'WHERE' if where else ''
+    query = f' {where_clause} {first_key} = %({first_key})s'
+    query += ' '.join([f' {operator} {key} = %({key})s' for key in filters])
+    return query
+
+
+and_where = partial(filter_query, operator='AND')
+or_where = partial(filter_query, operator='OR')

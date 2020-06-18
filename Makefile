@@ -15,7 +15,7 @@ format: isort
 changelog:
 	gitchangelog $(version) > CHANGELOG
 
-git-commit:
+commit:
 	git add .
 	git commit
 
