@@ -4,8 +4,7 @@ from typing import Callable, List, Union
 import MySQLdb
 from flask import g
 from flask.logging import logging as logger
-from MySQLdb import Connection  # pylint: disable=no-name-in-module
-from MySQLdb._mysql import escape_string
+from MySQLdb import Connection, escape_string
 from MySQLdb.cursors import Cursor, DictCursor
 
 import _shared.constants as CONSTANTS
@@ -82,7 +81,7 @@ def in_query(query_func):
         conn = get_db_connection()
         cur = get_cursor(conn)
         # prepared_query = query_func(*args, **kwargs) % kwargs.get('params')
-        return run_prepared_query(cur,  prepared_query=query_func(*args, **kwargs), params=kwargs.get('params'))
+        return run_prepared_query(cur, prepared_query=query_func(*args, **kwargs), params=kwargs.get('params'))
 
     return wrapper
 
