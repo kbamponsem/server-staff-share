@@ -1,8 +1,9 @@
 from functools import wraps
 
-from flask import g
+from flask import g, request
 
 from .error_service import AUTHENICATION_ERROR
+from .utilities import decode_jwt
 
 
 def authenticate_request(func):
@@ -18,6 +19,12 @@ def authenticate_request(func):
     @wraps(func)
     def decor(*args, **kwargs):
         # --- IMPLEMENT YOUR AUTHENTICATION HERE -- #
+        token = request.headers.get('Authorization')
+        if not token:
+            raise AUTHENICATION_ERROR
+
+        user = decode_jwt(token.replace('Bearer ', ''))
+        set_current_user(user_id=user['id'], **user)
         return func(*args, **kwargs)
 
     return decor

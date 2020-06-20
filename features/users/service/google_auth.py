@@ -4,7 +4,6 @@ from google.oauth2 import id_token
 from _shared import AuthProvider, Constants, hash_value, uuid, with_key
 from _shared.error_service import AUTHENICATION_ERROR
 
-from ..schema import REGISTER_USER_DATA
 from .local_auth import create_new_user
 from .queries import MODE, use_query
 

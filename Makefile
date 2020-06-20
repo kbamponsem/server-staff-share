@@ -1,7 +1,6 @@
 HOST=127.0.0.1
-PORT=3000
-pip=pip3
-
+pip:=$(shell which pip)
+app=staff-share
 
 init:
 	$(pip) install virtualenv
@@ -25,4 +24,31 @@ commit:
 	git commit
 
 run: 
-	gunicorn --bind $(HOST):$(PORT) -w 4  main:app --reload --logger-class _shared.AppLogger
+	gunicorn -w 4  main:app --logger-class _shared.AppLogger
+
+
+# DOCKER COMMANDS
+logs:
+	docker  logs --tail 10 -f ${app}
+
+compose:
+	docker-compose up -d
+
+
+compose-build:
+	docker-compose up -d --build
+
+stats:
+	docker ps
+
+login:
+	docker exec -it ${app} /bin/sh
+
+volumes:
+	docker volume ls
+
+stop:
+	docker-compose down
+
+connect-db:
+	docker exec -it mysql mysql -u root -p idoc_db

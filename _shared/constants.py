@@ -1,4 +1,6 @@
 # noinspection PyPackageRequirements
+from os import path
+
 from dotenv import load_dotenv
 
 from .utilities import get_env
@@ -15,6 +17,9 @@ PORT = get_env('PORT')
 # by the app’s error handlers. If not set,
 # this is implicitly true if TESTING or DEBUG is enabled.
 PROPAGATE_EXCEPTIONS = get_env('PROPAGATE_EXCEPTIONS', True)
+
+UPLOAD_FOLDER = get_env('UPLOAD_FOLDER', path.join(path.dirname(__file__), '../data'))
+ALLOWED_EXTENSIONS = ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif']
 
 DB_HOST = get_env('DB_HOST')
 DB_USER = get_env('DB_USER')

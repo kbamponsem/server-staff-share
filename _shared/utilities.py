@@ -3,6 +3,7 @@ import hashlib
 import os
 from functools import reduce
 from uuid import uuid4
+import jwt
 
 
 def get_env(key: str, default=None):
@@ -56,3 +57,12 @@ def verify_hash(hashed_string: str, string: str):
     )
     pwdhash = binascii.hexlify(pwdhash).decode('ascii')
     return pwdhash == hashed_string
+
+
+def encode_jwt(data: dict):
+    encoded_jwt = jwt.encode(data, get_env('SECRET_KEY'), algorithm='HS256')
+    return encoded_jwt.decode('ascii')
+
+
+def decode_jwt(token: str):
+    return jwt.decode(token, get_env('SECRET_KEY'), algorithms=['HS256'])

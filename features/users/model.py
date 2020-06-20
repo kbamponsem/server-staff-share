@@ -5,15 +5,9 @@ import _shared
 
 
 class User(TypedDict):
-    id: int  # unsigned
-    first_name: str
-    middle_name: Union[str, None]
-    surname: str
-
-    dob: dt.date
-    occupation: Union[str, None]
-
-    phone_number: Union[str, None]
+    id: str
+    name: str
+    username: str
     email: str
-    password: str
+    password: Union[str, None]
     auth_provider: _shared.AuthProvider

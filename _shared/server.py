@@ -12,5 +12,6 @@ def configure_app(app: Flask):
         ENV=Constants.MODE,
         MAX_CONTENT_LENGTH=Constants.MAX_CONTENT_LENGTH,
         PROPAGATE_EXCEPTIONS=Constants.PROPAGATE_EXCEPTIONS,
+        UPLOAD_FOLDER=Constants.UPLOAD_FOLDER
     ))
     return app

@@ -1,3 +1,3 @@
-from .routes import register_user, update_user
+from .routes import register_user, update_user, verify
 
-expose = [register_user, update_user]
+expose = [register_user, update_user, verify]

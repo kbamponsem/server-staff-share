@@ -1,0 +1,47 @@
+version: "3.1"
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    container_name: nginx    
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+        - nginx-letsencrypt:/etc/letsencrypt
+    links:
+      - staff-share
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - /var/lib/mysql    
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file: 
+      - .env
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+
+  staff-share:
+    build: .
+    container_name: staff-share
+    command: make run 
+    restart: always
+    volumes:
+      - ./data:/app/data
+    links:
+      - mysql
+    env_file: 
+      - .env
+    ports:
+      - ${PORT}:${PORT}
+    
+
+volumes:
+  nginx-letsencrypt:
