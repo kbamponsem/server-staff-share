@@ -1,6 +1,7 @@
 HOST=127.0.0.1
 pip:=$(shell which pip)
 app=staff-share
+PORT=8000
 
 init:
 	$(pip) install virtualenv
@@ -24,7 +25,7 @@ commit:
 	git commit
 
 run: 
-	gunicorn -w 4  main:app --logger-class _shared.AppLogger
+	gunicorn --bind $(HOST):$(PORT) -w 4  main:app --logger-class _shared.AppLogger
 
 
 # DOCKER COMMANDS
